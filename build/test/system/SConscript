@@ -1,0 +1,28 @@
+import os
+
+Import('env')
+
+system_test_sources = Glob('#build/test/system/*.cpp')
+
+cpp_path='#test'
+
+libs = ['system', 'util']					 
+testing = [File('/usr/local/lib/libgtest.a'),
+		   File('/usr/local/lib/libgtest_main.a'),
+		   File('/usr/local/lib/libgmock.a'),
+		   File('/usr/local/lib/libgmock_main.a')]
+		   
+static_libraries = [File('#lib/' + lib + '/lib' + lib + '.a') for lib in libs]
+
+env = env.Clone()
+env.Append(LIBS=static_libraries + testing)
+
+env.Append(CPPPATH=cpp_path)
+
+system_test = env.Program(target='system-test',
+ 						source=system_test_sources)
+
+Import('unitTestRunner')
+
+Command("test.passed", 'system-test', unitTestRunner)
+env.Alias('system-test', 'test.passed')

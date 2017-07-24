@@ -1,0 +1,29 @@
+import os
+
+Import('env')
+
+FILE_NAME_sources = Glob('#src/FILE_NAME/*.cpp')
+
+libs = LIBRARIES
+
+env = env.Clone(LIBS=libs)
+
+FILE_NAME_lib = env.Library(target='FILE_NAME', source=FILE_NAME_sources)
+
+FILE_NAME_shared_lib = env.SharedLibrary(target='FILE_NAME-shared', source=FILE_NAME_sources)
+
+for lib in libs:
+    env.Append(LIBPATH='#lib/' + lib)
+    env.Depends(FILE_NAME_lib, env.Alias(lib))
+    env.Depends(FILE_NAME_shared_lib, env.Alias(lib))
+
+env.Install('#lib/FILE_NAME', FILE_NAME_lib)
+env.Alias('FILE_NAME', '#lib/FILE_NAME')
+
+env.Install('#lib/FILE_NAME', FILE_NAME_lib)
+env.Alias('all', '#lib/FILE_NAME')
+
+env.Install('/usr/lib', FILE_NAME_lib)
+env.Install('/usr/lib', FILE_NAME_shared_lib)
+env.Alias('install', '/usr/lib')
+

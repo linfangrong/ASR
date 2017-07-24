@@ -1,0 +1,26 @@
+import os
+
+Import('env')
+
+util_sources = Glob('#build/src/util/*.cpp')
+
+libs = [ ]
+
+env = env.Clone()
+
+static_libraries = [File('#lib/' + lib + '/lib' + lib + '.a') for lib in libs]
+
+env.Append(LIBS=static_libraries)
+
+util_lib = env.Library(target='util',
+                       source=util_sources)
+                       
+env.Install('#lib/util', util_lib)
+env.Alias('util', '#lib/util')
+
+env.Install('#lib/util', util_lib)
+env.Alias('all', '#lib/util')
+
+Import('unitTestRunner')
+env.Command("test.passed", '#build/test/util/util-test', unitTestRunner)
+env.Alias('util', 'test.passed')

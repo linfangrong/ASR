@@ -1,0 +1,29 @@
+import os
+
+Import('env')
+
+math_test_sources = Glob('#build/test/math/*.cpp')
+
+cpp_path='#test'
+
+libs = ['math', 'util']					 
+testing = [File('/usr/local/lib/libgtest.a'),
+		   File('/usr/local/lib/libgtest_main.a'),
+		   File('/usr/local/lib/libgmock.a'),
+		   File('/usr/local/lib/libgmock_main.a')]
+		   
+static_libraries = [File('#lib/' + lib + '/lib' + lib + '.a') for lib in libs]
+		   
+env = env.Clone()
+env.Append(LIBS=static_libraries + testing)
+
+env.Append(CPPPATH=cpp_path)
+
+
+math_test = env.Program(target='math-test',
+ 						source=math_test_sources)
+            
+Import('unitTestRunner')
+            
+Command("test.passed", 'math-test', unitTestRunner)
+env.Alias('math-test', 'test.passed')
