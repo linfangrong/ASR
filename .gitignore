@@ -21,6 +21,7 @@
 *.smod
 
 # Compiled Static libraries
+build/
 *.lai
 *.la
 *.a
@@ -30,3 +31,9 @@
 *.exe
 *.out
 *.app
+
+# Eclipse Settings
+*.cproject
+*.project
+*.sconsign.dblite
+*.settings

@@ -9,6 +9,6 @@ template <typename KEY,  typename VALUE>
 class HashMap : public google::dense_hash_map
                        <KEY, VALUE, std::hash<KEY>, std::equal_to<KEY> > {};
 
-} // end namespace OpenML
+} // end namespace ASR
 
 #endif // END TYPES
